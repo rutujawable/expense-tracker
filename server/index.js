@@ -4,6 +4,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv"
 dotenv.config()
 import cors from "cors"
+import  User from "./models/User.js";
+import { postLogin, postSignup } from "./controllers/user.js";
+ import Transaction from "./models/Transaction.js";
+import { postTransaction,getTransaction,deleteTransaction } from "./controllers/transaction.js";
+
 
 
 const app = express()
@@ -28,7 +33,23 @@ const port = process.env.PORT
         message: "welcome to expense tracker"
 
     })
+
  })
+
+
+
+   app.post("/signup", postSignup)
+
+
+   app.post("/login", postLogin)
+
+
+   app.post("/transaction", postTransaction)
+
+   app.get("/transactions", getTransaction)
+
+   app.delete("/transaction/:id", deleteTransaction)
+
 
 
 app.listen(port,(req,res)=>{
