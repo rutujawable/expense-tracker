@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import toast, {Toaster} from 'react-hot-toast'
 
+
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,9 +28,11 @@ function Login() {
       toast.error(response.data.message)
     }
   }
+ 
 
   return (
     <div>
+   
       <h1 className='auth-heading'>User Login</h1>
 
       <form className='auth-form'>
@@ -60,6 +63,7 @@ function Login() {
       <Link to='/signup' className='auth-link'>Don't have an account? Signup</Link>
 
       <Toaster />
+     
     </div>
   )
 }

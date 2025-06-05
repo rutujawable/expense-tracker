@@ -2,6 +2,8 @@ import axios from "axios"
 import "./AddTransaction.css"
 import { useState, useEffect } from 'react'
 import toast, {Toaster} from "react-hot-toast"
+import Footer from "../../components/Footer/Footer"
+import Header from "../../components/Header/Header"
 
 function AddTransaction() {
   const [user, setUser] = useState('')
@@ -47,11 +49,20 @@ function AddTransaction() {
     }, 2000)
   }
 
+  const handleLogout = () => {
+  localStorage.clear();
+  toast.success('Logged out successfully');
+  setTimeout(() => {
+    window.location.href = '/login';
+  }, 3000);
+};
+
 
 
 
   return (
     <div>
+      <Header user={user} onLogout={handleLogout} />
         <h3 className="auth-heading">
           Add Transaction For {user.fullName}
         </h3>
@@ -101,6 +112,8 @@ function AddTransaction() {
       
 
       <Toaster />
+
+      <Footer/>
     </div>
   )
 }

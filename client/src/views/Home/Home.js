@@ -4,15 +4,29 @@ import toast, {Toaster} from 'react-hot-toast'
 import axios from 'axios'
 import TransactionCard from '../../components/TransactionCard'
 import add from "./plus.png"
-
+import Header from '../../components/Header/Header'
 
 import { Link } from 'react-router-dom'
+import Footer from '../../components/Footer/Footer'
 
 function Home() {
   const [user, setUser] = useState('')
   const [transactions, setTransactions] = useState([])
   const [netIncome, setNetIncome] = useState(0)
   const [netExpense, setNetExpense] = useState(0)
+
+
+
+
+const handleLogout = () => {
+  localStorage.clear();
+  toast.success('Logged out successfully');
+  setTimeout(() => {
+    window.location.href = '/login';
+  }, 3000);
+};
+
+
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
@@ -63,7 +77,11 @@ function Home() {
   }, [transactions])
 
   return (
+
+    
     <div>
+     <Header user={user} onLogout={handleLogout} />
+  
       <h1 className='home-greeting'>Hello {user.fullname}... 👋</h1>
       <span className='home-heading'> 🤝Welcome to the Expense Tracker ..💸🧾💰</span>
 
@@ -75,7 +93,7 @@ function Home() {
           window.location.href = '/login'
         }, 3000)
       }}>
-        Logout
+        {/* Logout */}
       </span>
 
       <div className='net-transactions-values'>
@@ -134,7 +152,10 @@ function Home() {
           
       </Link>
 
+     
+
       <Toaster />
+       <Footer/>
     </div>
   )
 }
