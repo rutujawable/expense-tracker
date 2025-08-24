@@ -69,7 +69,7 @@ function AddTransaction() {
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8">
             <div className="card shadow-lg p-4 animate-fade bg-white rounded-4">
-              <h3 className="text-center mb-4 text-primary fw-bold">
+              <h3 className="text-center mb-4 text-primary fw-bold text-dark">
                 Add Transaction for{" "}
                 <span className="text-gradient">{user.fullName}</span>
               </h3>

@@ -31,18 +31,16 @@ function Signup() {
   };
 
   return (
-    <div className="auth-container d-flex align-items-center justify-content-center my-5">
-      <div className="card shadow-lg p-4 animate-fade bg-white rounded-4" style={{ maxWidth: '400px', width: '100%' }}>
-        <h3 className="text-center mb-3 text-primary fw-bold">
-          Create <span className="text-gradient">Account</span>
-        </h3>
-        <p className="auth-subtitle text-center mb-4">Start tracking your expenses</p>
+    <div className="auth-container">
+      <div className="auth-card shadow">
+        <h2 className="auth-title">Create Account</h2>
+        <p className="auth-subtitle">Start tracking your expenses</p>
 
-        <form className="d-flex flex-column gap-3">
+        <form>
           <input 
             type="text" 
             placeholder="Full Name" 
-            className="form-control modern-input" 
+            className="form-control auth-input mb-3" 
             value={user.fullname} 
             onChange={(e) => setUser({ ...user, fullname: e.target.value })} 
           />
@@ -50,7 +48,7 @@ function Signup() {
           <input 
             type="email" 
             placeholder="Email" 
-            className="form-control modern-input" 
+            className="form-control auth-input mb-3" 
             value={user.email} 
             onChange={(e) => setUser({ ...user, email: e.target.value })} 
           />
@@ -58,29 +56,33 @@ function Signup() {
           <input 
             type="password" 
             placeholder="Password" 
-            className="form-control modern-input" 
+            className="form-control auth-input mb-3" 
             value={user.password} 
             onChange={(e) => setUser({ ...user, password: e.target.value })} 
           />
 
-          <label className='form-label text-secondary'>Enter date of birth:</label>
-          <input 
-            type="date" 
-            className="form-control modern-input" 
-            value={user.dob} 
-            onChange={(e) => setUser({ ...user, dob: e.target.value })} 
-          />
+          {/* Shift Date of Birth to the left using Bootstrap row/col */}
+          <div className="mb-3 text-start">
+  <label className="form-label">Enter date of birth:</label>
+  <input
+    type="date"
+    className="form-control auth-input"
+    value={user.dob}
+    onChange={(e) => setUser({ ...user, dob: e.target.value })}
+  />
+</div>
+
 
           <button 
             type="button" 
             onClick={signup} 
-            className="btn btn-success modern-btn w-100"
+            className="btn btn-success auth-btn w-100"
           >
             Sign Up
           </button>
         </form>
 
-        <p className="auth-link-text text-center mt-3">
+        <p className="auth-link-text mt-3">
           Already have an account? <Link to="/login" className="auth-link">Login</Link>
         </p>
       </div>

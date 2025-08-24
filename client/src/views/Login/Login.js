@@ -31,18 +31,16 @@ function Login() {
   };
 
   return (
-    <div className="auth-container d-flex align-items-center justify-content-center my-5">
-      <div className="card shadow-lg p-4 animate-fade bg-white rounded-4" style={{ maxWidth: '400px', width: '100%' }}>
-        <h3 className="text-center mb-3 text-primary fw-bold">
-          Welcome Back <span className="text-gradient">User</span>
-        </h3>
-        <p className="auth-subtitle text-center mb-4">Login to manage your expenses</p>
-
-        <form className="d-flex flex-column gap-3">
+    <div className="auth-container">
+      <div className="auth-card shadow">
+        <h2 className="auth-title">Welcome Back</h2>
+        <p className="auth-subtitle">Login to manage your expenses</p>
+        
+        <form>
           <input 
             type="email" 
             placeholder="Email" 
-            className="form-control modern-input" 
+            className="form-control auth-input" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
           />
@@ -50,7 +48,7 @@ function Login() {
           <input 
             type="password" 
             placeholder="Password" 
-            className="form-control modern-input" 
+            className="form-control auth-input" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
           />
@@ -58,13 +56,13 @@ function Login() {
           <button 
             type="button" 
             onClick={loginNow} 
-            className="btn btn-primary modern-btn w-100"
+            className="btn btn-primary auth-btn"
           >
             Login
           </button>
         </form>
         
-        <p className="auth-link-text text-center mt-3">
+        <p className="auth-link-text">
           Don’t have an account? <Link to="/signup" className="auth-link">Sign up</Link>
         </p>
       </div>
