@@ -1,163 +1,130 @@
-import React, { useEffect, useState } from 'react'
-import "./Home.css"
-import toast, {Toaster} from 'react-hot-toast'
-import axios from 'axios'
-import TransactionCard from '../../components/TransactionCard'
-import add from "./plus.png"
-import Header from '../../components/Header/Header'
-
-import { Link } from 'react-router-dom'
-import Footer from '../../components/Footer/Footer'
+import React, { useEffect, useState } from 'react';
+import './Home.css';
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
+import TransactionCard from '../../components/TransactionCard';
+import add from './plus.png';
+import Header from '../../components/Header/Header';
+import { Link } from 'react-router-dom';
+import Footer from '../../components/Footer/Footer';
 
 function Home() {
-  const [user, setUser] = useState('')
-  const [transactions, setTransactions] = useState([])
-  const [netIncome, setNetIncome] = useState(0)
-  const [netExpense, setNetExpense] = useState(0)
+  const [user, setUser] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [netIncome, setNetIncome] = useState(0);
+  const [netExpense, setNetExpense] = useState(0);
 
-
-
-
-const handleLogout = () => {
-  localStorage.clear();
-  toast.success('Logged out successfully');
-  setTimeout(() => {
-    window.location.href = '/login';
-  }, 3000);
-};
-
-
+  const handleLogout = () => {
+    localStorage.clear();
+    toast.success('Logged out successfully');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 2000);
+  };
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-
-    if(currentUser){
-      setUser(currentUser)
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      window.location.href = '/login';
     }
-
-    if(!currentUser){
-      window.location.href = '/login'
-    }
-  }, [])
+  }, []);
 
   const loadTransactions = async () => {
-    if(!user._id){
-      return
+    if (!user?._id) return;
+    toast.loading('Loading transactions...');
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/transactions?userID=${user._id}`);
+      const allTransactions = response.data.data || [];
+      // Ensure amount is a number for calculations
+      const formattedTransactions = allTransactions.map(tx => ({
+        ...tx,
+        amount: Number(tx.amount) || 0
+      }));
+      setTransactions(formattedTransactions);
+      toast.dismiss();
+      toast.success('Expenses fetched successfully');
+    } catch (error) {
+      toast.dismiss();
+      toast.error('Failed to load transactions');
     }
-    toast.loading('Loading transactions...')
-
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/transactions?userID=${user._id}`)
-
-    const allTransactions = response.data.data
-    toast.dismiss()
-    toast.success("expense are fetched successfully")
-
-    setTransactions(allTransactions)
-  }
+  };
 
   useEffect(() => {
-    loadTransactions()
-  }, [user])
+    if (user?._id) {
+      loadTransactions();
+    }
+  }, [user]);
 
+  // Calculate net income, expense, and balance correctly
   useEffect(() => {
-    let income = 0
-    let expense = 0
-
+    let income = 0;
+    let expense = 0;
     transactions.forEach((transaction) => {
-      if (transaction.type === 'credit') {
-        income += transaction.amount
-      }
-      else{
-        expense += transaction.amount
-      }
-    })
-
-    setNetIncome(income)
-    setNetExpense(expense)
-  }, [transactions])
+      const amt = Number(transaction.amount) || 0;
+      if (transaction.type === 'credit') income += amt;
+      else expense += amt;
+    });
+    setNetIncome(income);
+    setNetExpense(expense);
+  }, [transactions]);
 
   return (
+    <div className="home-container">
+      <Header user={user} onLogout={handleLogout} />
 
-    
-    <div>
-     <Header user={user} onLogout={handleLogout} />
-  
-      <h1 className='home-greeting'>Hello {user.fullname}... 👋</h1>
-      <span className='home-heading'> 🤝Welcome to the Expense Tracker ..💸🧾💰</span>
+      <div className="home-content">
+        <h1 className="home-greeting">
+          Hello {user?.fullname || 'User'} 👋
+        </h1>
+        <p className="home-subtitle">
+          🤝 Welcome to <span className="highlight">Expense Tracker</span> 💸🧾💰
+        </p>
 
-      <span className='home-logout' onClick={() => {
-        localStorage.clear()
-        toast.success('Logged out successfully')
-
-        setTimeout(()=>{
-          window.location.href = '/login'
-        }, 3000)
-      }}>
-        {/* Logout */}
-      </span>
-
-      <div className='net-transactions-values'>
-
-        <div className='net-transactions-value-item'>
-          <span className='net-transactions-value-amount'>
-            + {netIncome}
-          </span>
-          <span className='net-transactions-value-title'>
-            Net Income
-          </span>
+        <div className="net-summary">
+          <div className="summary-card income">
+            <span className="amount">+ ₹{netIncome.toFixed(2)}</span>
+            <span className="label">Net Income</span>
+          </div>
+          <div className="summary-card expense">
+            <span className="amount">- ₹{netExpense.toFixed(2)}</span>
+            <span className="label">Net Expense</span>
+          </div>
+          <div className="summary-card balance">
+            <span className="amount">₹{(netIncome - netExpense).toFixed(2)}</span>
+            <span className="label">Net Balance</span>
+          </div>
         </div>
 
-        <div className='net-transactions-value-item'>
-          <span className='net-transactions-value-amount'>
-            - {netExpense}
-          </span>
-          <span className='net-transactions-value-title'>
-           Net Expense
-          </span>
+        <div className="transactions-container">
+          {transactions.length > 0 ? (
+            transactions.map(({ _id, title, amount, category, type, createdAt }) => (
+              <TransactionCard
+                key={_id}
+                _id={_id}
+                title={title}
+                amount={amount}
+                category={category}
+                type={type}
+                createdAt={createdAt}
+                loadTransactions={loadTransactions}
+              />
+            ))
+          ) : (
+            <p className="no-transactions">No transactions found. Start by adding one!</p>
+          )}
         </div>
 
-        <div className='net-transactions-value-item'>
-          <span className='net-transactions-value-amount'>
-            {netIncome - netExpense}
-          </span>
-          <span className='net-transactions-value-title'>
-            Net Balance
-          </span>
-        </div>
-
+        <Link to="/add-transaction">
+          <img alt="Add Transaction" className="add-transaction-btn" src={add} />
+        </Link>
       </div>
-
-      <div className='transactions-container'>
-        {
-          transactions.map((transaction) => {
-            const {_id, title, amount, category, type, createdAt} = transaction
-
-            return (<TransactionCard
-              key={_id}
-              _id={_id}
-              title={title}
-              amount={amount}
-              category={category}
-              type={type}
-              createdAt={createdAt}
-              loadTransactions={loadTransactions}
-            />)
-          })
-        }
-      </div>
-
-      <Link to='/add-transaction'>
-        
-          <img alt='Add Transaction' className='add-transaction' src={add}></img> 
-          
-      </Link>
-
-     
 
       <Toaster />
-       <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

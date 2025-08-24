@@ -1,0 +1,50 @@
+/* Smooth fade animation */
+.animate-fade {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Modern inputs */
+.modern-input {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.4);
+}
+
+/* Button styling */
+.modern-btn {
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modern-btn:hover {
+  background-color: #007bff;
+  transform: scale(1.05);
+  box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.4);
+}

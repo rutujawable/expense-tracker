@@ -1,103 +1,91 @@
-import React from 'react'
-import { useState } from 'react'
-import "./../../global.css"
-import "./Signup.css"
-import axios from 'axios'
-import toast from 'react-hot-toast'
-import { Toaster } from 'react-hot-toast'
-import {Link} from "react-router-dom"
-import "./../../global.css"
-
-
+import React, { useState } from 'react';
+import './../Login/Login.css';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 function Signup() {
+  const [user, setUser] = useState({
+    fullname: '',
+    email: '',
+    password: '',
+    dob: ''
+  });
 
-     const [user,setUser] = useState({
-          "fullname":"",
-          "password":"",
-           "email":"",
-            "dob":""
-     })
+  const signup = async () => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/signup`, user);
 
-
-  const signup =  async ()=>{
-
-   const response = await axios.post(`${process.env.REACT_APP_API_URL}/signup`,{
-      "fullname":user.fullname,
-      "password":user.password,
-      "email":user.email,
-      "dob": user.dob
-   })
-
-   
-   console.log(response.data.data)
-
-   if(response.data.success){
-      toast.success("signup successfully")
-   }
-
-   else{
-      toast.error("failed to signup")
-   }
-
-
-   
-   
-  }
-  
-
+      if (response.data.success) {
+        toast.success('Signup successful');
+        setUser({ fullname: '', email: '', password: '', dob: '' });
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 3000);
+      } else {
+        toast.error('Signup failed');
+      }
+    } catch (error) {
+      toast.error('Error during signup');
+    }
+  };
 
   return (
-    <div>
-      <h1 className='auth-heading'>User Registration</h1>
+    <div className="auth-container">
+      <div className="auth-card shadow">
+        <h2 className="auth-title">Create Account</h2>
+        <p className="auth-subtitle">Start tracking your expenses</p>
 
-      <form className='auth-form'>
-        <input
-          type="text"
-          placeholder="Fullname"
-          className='user-input'
-          value={user.fullname}
-          onChange={(e) => setUser({ ...user, fullname: e.target.value})}
+        <form>
+          <input 
+            type="text" 
+            placeholder="Full Name" 
+            className="form-control auth-input" 
+            value={user.fullname} 
+            onChange={(e) => setUser({ ...user, fullname: e.target.value })} 
           />
 
-        <input
-          type="email"
-          placeholder="Email"
-          className='user-input'
-          value={user.email}
-          onChange={(e)=>setUser({...user, email: e.target.value})}
+          <input 
+            type="email" 
+            placeholder="Email" 
+            className="form-control auth-input" 
+            value={user.email} 
+            onChange={(e) => setUser({ ...user, email: e.target.value })} 
           />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className='user-input'
-          value={user.password}
-          onChange={(e)=>setUser({...user, password: e.target.value})}
+          <input 
+            type="password" 
+            placeholder="Password" 
+            className="form-control auth-input" 
+            value={user.password} 
+            onChange={(e) => setUser({ ...user, password: e.target.value })} 
           />
 
-        <input
-          type="date"
-          placeholder="Date of Birth"
-          className='user-input'
-          value={user.dob}
-          onChange={(e)=>setUser({...user, dob: e.target.value})}
+          <label className='form-label'> Enter date of birth:</label>
+          <input 
+            type="date" 
+            placeholder="Date of Birth" 
+            className="form-control auth-input" 
+            value={user.dob} 
+            onChange={(e) => setUser({ ...user, dob: e.target.value })} 
           />
 
-        <button
-          type='button'
-          className='btn-auth'
-          onClick={signup}
+          <button 
+            type="button" 
+            onClick={signup} 
+            className="btn btn-success auth-btn"
           >
-          Register
-        </button>
-      </form>
+            Sign Up
+          </button>
+        </form>
 
-      <Link to='/login' className='auth-link'>Already have an account? Login</Link>
-
+        <p className="auth-link-text">
+          Already have an account? <Link to="/login" className="auth-link">Login</Link>
+        </p>
+      </div>
       <Toaster />
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;

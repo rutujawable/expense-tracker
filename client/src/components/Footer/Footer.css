@@ -1,23 +1,30 @@
 .footer {
-  background-color: #000;
-  color: #ccc;
+  background: #f8f9fa; /* Light background to match header */
+  padding: 15px 0;
+  border-top: 1px solid #e6e6e6;
   text-align: center;
-  padding: 15px;
-  position: static;
-  /* width: 100%; */
+  color: #555;
+  font-size: 0.95rem;
+ 
   bottom: 0;
-  border-top: 2px solid #42f5e3;
-  margin-top: 320px;
+  width: 100%;
+  margin-top: 450px;
 }
 
+/* Brand name with gradient color to match logo accent */
+.footer .brand {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* Hover effect */
 .footer p {
   margin: 0;
-  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
-@media (max-width: 600px) {
-  .footer {
-    font-size: 12px;
-    padding: 10px;
-  }
+.footer:hover p {
+  color: #333;
 }

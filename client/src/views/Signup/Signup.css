@@ -1,0 +1,40 @@
+/* Full page background with gradient */
+.signup-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #11998e, #38ef7d); /* Green-themed gradient */
+  padding: 15px;
+}
+
+/* Card styling with smooth animation */
+.signup-card {
+  max-width: 420px;
+  width: 100%;
+  border-radius: 15px;
+  animation: fadeInUp 0.7s ease-out;
+  background: #fff;
+}
+
+/* Smooth fade/slide animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input focus effect */
+.form-control:focus {
+  border-color: #38ef7d;
+  box-shadow: 0 0 8px rgba(56, 239, 125, 0.4);
+}
+
+/* Button hover animation */
+.btn-success:hover {
+  background-color: #28a745;
+  transform: scale(1.03);
+  transition: all 0.2s ease;
+}
