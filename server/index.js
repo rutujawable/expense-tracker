@@ -27,6 +27,10 @@ const port = process.env.PORT
  
  connection ()
 
+ app.get("/health",(req,res)=>{
+    res.send("server is healthy")
+ })
+
  app.get("/", (req,res)=>{
     res.json({
         success:true,
